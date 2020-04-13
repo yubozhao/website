@@ -40,11 +40,13 @@ KFServing works with Kubeflow 0.7. Kustomize installation files are [located in 
 * [Kafka](https://github.com/kubeflow/kfserving/tree/master/docs/samples/kafka)
 * [S3](https://github.com/kubeflow/kfserving/tree/master/docs/samples/s3)
 * [On-prem cluster](https://github.com/kubeflow/kfserving/tree/master/docs/samples/pvc)
+* [BentoML](https://github.com/kubeflow/kfserving/tree/master/docs/samples/bentoml)
 
 ## Sample notebooks
 * [SDK client](https://github.com/kubeflow/kfserving/blob/master/docs/samples/client/kfserving_sdk_sample.ipynb)
 * [Transformer (pre/post processing)](https://github.com/kubeflow/kfserving/blob/master/docs/samples/transformer/image_transformer/kfserving_sdk_transformer.ipynb)
 * [ONNX](https://github.com/kubeflow/kfserving/blob/master/docs/samples/onnx/mosaic-onnx.ipynb)
+* [BentoML](https://github.com/kubeflow/kfserving/tree/master/docs/samples/bentoml/bentoml.ipynb)
 
 We frequently add examples to our [GitHub repo](https://github.com/kubeflow/kfserving/tree/master/docs/samples/).
 
