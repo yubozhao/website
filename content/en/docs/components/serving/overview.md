@@ -188,3 +188,17 @@ You can use NVIDIA Triton Inference Server as a
 [standalone system](/docs/components/serving/tritoninferenceserver),
 but you should consider KFServing as described above. KFServing includes support 
 for NVIDIA Triton Inference Server.
+
+## BentoML
+
+BentoML is an open-source platform for high-performance ML model serving. BentoML bundles
+models, their dependencies and configurations into an archive that save in local disk or
+remote storage such as Google cloud storage or S3 bucket. User can deploy the bundle with
+generated docker, CLI, web REST... TODO
+
+BentoML supports all major machine learning frameworks including Keras, Tensorflow, PyTorch, Fast.ai,
+XGBoost and etc.
+
+   * [BentoML documentation](https://docs.bentoml.org)
+   * [GitHub repository](https://github.com/bentoml/BentoML)
+   * [Community](https://join.slack.com/t/bentoml/shared_invite/enQtNjcyMTY3MjE4NTgzLTU3ZDc1MWM5MzQxMWQxMzJiNTc1MTJmMzYzMTYwMjQ0OGEwNDFmZDkzYWQxNzgxYWNhNjAxZjk4MzI4OGY1Yjg)
