@@ -11,16 +11,7 @@ weight = 51
 ### Prerequisites
 
 1. a Kubernetes cluster
-
-2. Docker and Docker Hub properly installed and configured in your local machine.
-
-
-MAYBE REMOVE THIS
-The following resources will be created in this guide.
-
-- A Kubernetes service
-- A Kubernetes deployment
-- A model archived by BentoML in your local machine.
+2. Docker and Docker Hub installed and configured in your local machine.
 
 ### Train and save iris classifier model with BentoML
 
@@ -40,8 +31,8 @@ class IrisClassifier(BentoService):
         return self.artifacts.model.predict(df)
 ```
 
-The above code defines a prediction service that requires a scikit-learn model, and asks
-BentoML to figure out the required PyPI pip packages automatically. It also defined an
+These code defines a prediction service that requires a scikit-learn model, and asks
+BentoML to figure out the required PyPI packages automatically. It also defined an
 API, which is the entry point for accessing this prediction service. And the API is
 expecting a `pandas.DataFrame` object as its input data.
 
@@ -72,16 +63,10 @@ if __name__ == "__main__":
     saved_path = iris_classifier_service.save()
 ```
 
-*Use BentoML CLI to verify is the saved model:*
-
-```shell
-bentoml get IrisClassifier:latest
-```
-
 ### Build and push an iris classifier model image
 
-BentoML generates a Dockerfile for prediction service when saving the model.
-
+BentoML generates a Dockerfile for prediction service when saving the model, that can be
+used to build a docker image.
 
 ```shell
 saved_path=$(bentoml get IrisClassifier:latest -q | jq -r ".uri.uri")
@@ -143,16 +128,12 @@ spec:
 kubectl apply -f iris-classifier.yaml
 ```
 
-Verify service and deployment is applied by using `kubectl` command:
+### Send prediction request
+
+Use `kubectl describe` command to get the `NODE_PORT`
 
 ```shell
-kubectl get deployment --namespace kubeflow
-```
-
-### Sending prediction request
-
-```shell
-kubectl get svc iris-classifier --namespace kubeflow
+kubectl describe svc iris-classifier --namespace kubeflow
 ```
 
 And then send the request:
@@ -165,9 +146,9 @@ curl -i \
   http://EXTERNAL_IP:NODE_PORT/predict
 ```
 
-## Monitoring metrics with Prometheus
+### Monitor metrics with Prometheus
 
-### Perquisites
+#### Perquisites
 
 - Prometheus installed in the cluster
   - [Prometheus documentation](https://prometheus.io/docs/introduction/overview/)
@@ -215,7 +196,6 @@ Apply the change with `kubectl` CLI.
 ```shell
 kubectl apply -f iris-classifier.yaml
 ```
-
 
 ## Remove deployment
 
