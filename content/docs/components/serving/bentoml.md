@@ -13,7 +13,7 @@ weight = 51
 1. a Kubernetes cluster
 2. Docker and Docker Hub installed and configured in your local machine.
 
-### Train and save iris classifier model with BentoML
+### Train and save an iris classifier model with BentoML
 
 Save the following code to a new file named `iris_classifier.py`:
 
@@ -65,8 +65,8 @@ if __name__ == "__main__":
 
 ### Build and push an iris classifier model image
 
-BentoML generates a Dockerfile for prediction service when saving the model, that can be
-used to build a docker image.
+BentoML generates a Dockerfile for prediction service when saving the model, that can
+be used to build a docker image.
 
 ```shell
 saved_path=$(bentoml get IrisClassifier:latest -q | jq -r ".uri.uri")
@@ -124,6 +124,8 @@ spec:
         - containerPort: 5000
 ```
 
+Use `kubectl` CLI to deploy the model API server to the cluster
+
 ```shell
 kubectl apply -f iris-classifier.yaml
 ```
@@ -155,13 +157,14 @@ curl -i \
   - [Installation instruction with Helm chart](https://github.com/helm/charts/tree/master/stable/prometheus)
 
 BentoML provides Prometheus metrics endpoint out of the box for the prediction
-server. BentoML provides the essential metrics and the ability to customize base on
-needs.
+server. It also provides the essential metrics and the ability to create and customize
+new metrics base on needs.
 
 To allow Prometheus monitoring deployed prediction server, update the deployment
 template spec with annotations for Prometheus monitoring.
 
-Change the deployment spec as follows:
+Change the deployment spec as follows, also replace `{docker_username}` with Docker Hub
+username:
 
 ```yaml
 apiVersion: apps/v1
