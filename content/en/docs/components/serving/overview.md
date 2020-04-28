@@ -4,16 +4,16 @@ description = "Model serving overview"
 weight = 1
 +++
 
-Kubeflow supports two model serving systems that allow multi-framework model 
+Kubeflow supports two model serving systems that allow multi-framework model
 serving: *KFServing* and *Seldon Core*. Alternatively, you can use a
 standalone model serving system. This page gives an overview of the options, so
-that you can choose the framework that best supports your model serving 
+that you can choose the framework that best supports your model serving
 requirements.
 
 ## Multi-framework serving with KFServing or Seldon Core
 
-KFServing and Seldon Core are both open source systems that allow 
-multi-framework model serving. The following table compares 
+KFServing and Seldon Core are both open source systems that allow
+multi-framework model serving. The following table compares
 KFServing and Seldon Core. A check mark (**&check;**) indicates that the system
 (KFServing or Seldon Core) supports the feature specified in that row.
 
@@ -145,15 +145,15 @@ KFServing and Seldon Core. A check mark (**&check;**) indicates that the system
     </tbody>
   </table>
 </div>
- 
+
 Notes:
 
-   * KFServing and Seldon Core share some technical features, including 
-     explainability (using [Seldon Alibi 
-     Explain](https://github.com/SeldonIO/alibi)) and payload logging, as well 
+   * KFServing and Seldon Core share some technical features, including
+     explainability (using [Seldon Alibi
+     Explain](https://github.com/SeldonIO/alibi)) and payload logging, as well
      as other areas.
-   * A commercial product, 
-     [Seldon Deploy](https://www.seldon.io/tech/products/deploy/), supports both 
+   * A commercial product,
+     [Seldon Deploy](https://www.seldon.io/tech/products/deploy/), supports both
      KFServing and Seldon in production.
    * KFServing is part of the Kubeflow project ecosystem. Seldon Core is an
      external project supported within Kubeflow.
@@ -168,11 +168,11 @@ Further information:
    * [Kubeflow documentation](/docs/components/serving/seldon/)
    * [Seldon Core documentation](https://docs.seldon.io/projects/seldon-core/en/latest/)
    * [GitHub repository](https://github.com/SeldonIO/seldon-core)
-   * [Community](https://docs.seldon.io/projects/seldon-core/en/latest/developer/community.html)   
+   * [Community](https://docs.seldon.io/projects/seldon-core/en/latest/developer/community.html)
 
 ## TensorFlow Serving
 
-For TensorFlow models you can use TensorFlow Serving for 
+For TensorFlow models you can use TensorFlow Serving for
 [real-time prediction](/docs/components/serving/tfserving_new).
 However, if you plan to use multiple frameworks, you should consider KFServing
 or Seldon Core as described above.
@@ -184,23 +184,24 @@ inferencing of TensorRT, TensorFlow, Pytorch, ONNX and Caffe2 models. The server
 optimized to deploy machine learning algorithms on both GPUs and
 CPUs at scale. Triton Inference Server was previously known as TensorRT Inference Server.
 
-You can use NVIDIA Triton Inference Server as a 
+You can use NVIDIA Triton Inference Server as a
 [standalone system](/docs/components/serving/tritoninferenceserver),
-but you should consider KFServing as described above. KFServing includes support 
+but you should consider KFServing as described above. KFServing includes support
 for NVIDIA Triton Inference Server.
 
 ## BentoML
 
-BentoML is an open-source platform for high-performance ML model serving.
+[BentoML](https://bentoml.org) is an open-source platform for high-performance ML model
+serving. It makes building production API endpoint for your ML model easy and supports
+all major machine learning training frameworks, including Tensorflow, Keras, PyTorch,
+XGBoost, scikit-learn and etc.
 
-BentoML bundles models, their dependencies and configurations into an archive that save
-in local disk or remote storage like Google cloud storage or S3 bucket. Users can
-deploy the archived bundle as API server to platforms such as Kubernetes, KNative,
-AWS Lambda, Sagemaker, and more.
+BentoML comes with a high-performance API model server with adaptive micro-batching
+support, which achieves the advantage of batch processing in online serving. It also
+provides model management and model deployment functionality, giving ML teams an
+end-to-end model serving workflow, with DevOps best practices baked in.
 
-BentoML supports all major machine learning frameworks including Keras, Tensorflow, PyTorch, Fast.ai,
-XGBoost and etc.
-
-   * [BentoML documentation](https://docs.bentoml.org)
    * [GitHub repository](https://github.com/bentoml/BentoML)
+   * [BentoML documentation](https://docs.bentoml.org)
+   * [Quick start guide](https://docs.bentoml.org/en/latest/quickstart.html)
    * [Community](https://join.slack.com/t/bentoml/shared_invite/enQtNjcyMTY3MjE4NTgzLTU3ZDc1MWM5MzQxMWQxMzJiNTc1MTJmMzYzMTYwMjQ0OGEwNDFmZDkzYWQxNzgxYWNhNjAxZjk4MzI4OGY1Yjg)
