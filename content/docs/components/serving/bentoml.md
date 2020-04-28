@@ -6,14 +6,22 @@ weight = 51
 
 {{% stable-status %}}
 
-## Serving a model
+## Model serving with BentoML
 
 ### Prerequisites
 
-1. a Kubernetes cluster
+1. a Kubernetes cluster and `kubectl` installed on your local machine.
+    * `kubectl` install instruction: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 2. Docker and Docker Hub installed and configured in your local machine.
+    * Docker install instruction: https://docs.docker.com/get-docker/
+3. Python 3.6 or above and required PyPi packages: `bentoml`, `scikit-learn`
+    * ```pip install bentoml scikit-learn```
 
-### Train and save an iris classifier model with BentoML
+BentoML is an open-source framework for high-performance ML model serving, which supports
+all major machine learning frameworks including Keras, Tensorflow, PyTorch, Fast.ai,
+XGBoost and etc.
+
+### Build an iris classifier model server with BentoML
 
 Save the following code to a new file named `iris_classifier.py`:
 
@@ -31,12 +39,15 @@ class IrisClassifier(BentoService):
         return self.artifacts.model.predict(df)
 ```
 
-These code defines a prediction service that requires a scikit-learn model, and asks
+This code defines a model API server that requires a `scikit-learn` model, and asks
 BentoML to figure out the required PyPI packages automatically. It also defined an
 API, which is the entry point for accessing this prediction service. And the API is
 expecting a `pandas.DataFrame` object as its input data.
 
-Run the following code to train a classifier model and save it with BentoML.
+Run the following code to create a BentoService SavedBundle with the iris classification
+model. A BentoService SavedBundle is a versioned file archive ready for production
+deployment. The archive contains the model service defined above, python code
+dependencies, PyPi dependencies, and the trained iris classification model:
 
 ```python
 from sklearn import svm
@@ -63,25 +74,43 @@ if __name__ == "__main__":
     saved_path = iris_classifier_service.save()
 ```
 
-### Build and push an iris classifier model image
+Use BentoML CLI to start a local API model server:
 
-BentoML generates a Dockerfile for prediction service when saving the model, that can
-be used to build a docker image.
+```shell
+bentoml serve IrisClassifier:latest
+```
+
+BentoML automatically processes the incoming data into the required data format defined in
+the API. For the iris classifier BentoService defined above, incoming data transforms
+into a `pandas.DataFrame`.
+
+Use `curl` request in another terminal to get the prediction result:
+
+```bash
+curl -i \
+  --header "Content-Type: application/json" \
+  --request POST \
+  --data '[[5.1, 3.5, 1.4, 0.2]]' \
+  localhost:5000/predict
+```
+
+Find the file directory of the SavedBundle with `bentoml get` command, which is
+directory structured as a docker build context. Running docker build with this
+directory produces a docker image containing the model API server. Replace
+`{docker_username}` with your Docker Hub username and run the following code:
 
 ```shell
 saved_path=$(bentoml get IrisClassifier:latest -q | jq -r ".uri.uri")
 
-# Replace `DOCKER_USERNAME` with the Docker Hub username.
-docker_username=DOCKER_USERNAME
-
-docker build -t $docker_username/iris-classifier $saved_path
-docker push $docker_username/iris-classifier
+docker build -t {docker_username}/iris-classifier $saved_path
+docker push {docker_username}/iris-classifier
 ```
 
-### Deploy to Kubernetes
+### Deploy model server to Kubernetes
 
-Replace the `{docker_username}` with your Docker Hub username and save the code to
-a file called `iris-classifier.yaml`:
+The following is an example YAML file for specifying the resources required to run and
+expose a BentoML model server in a Kubernetes cluster. Replacing `{docker_username}`
+with your Docker Hub username and save it to `iris-classifier.yaml`:
 
 ```yaml
 apiVersion: v1
@@ -156,15 +185,13 @@ curl -i \
   - [Prometheus documentation](https://prometheus.io/docs/introduction/overview/)
   - [Installation instruction with Helm chart](https://github.com/helm/charts/tree/master/stable/prometheus)
 
-BentoML provides Prometheus metrics endpoint out of the box for the prediction
-server. It also provides the essential metrics and the ability to create and customize
-new metrics base on needs.
+BentoML provides Prometheus support out of the box for the model API server, includes
+the essential metrics for model serving and the ability to create and customize new
+metrics base on needs.
 
-To allow Prometheus monitoring deployed prediction server, update the deployment
-template spec with annotations for Prometheus monitoring.
-
-Change the deployment spec as follows, also replace `{docker_username}` with Docker Hub
-username:
+To enable Prometheus monitoring on the deployed model API server, update the YAML file
+with Prometheus related annotations. Change the deployment spec as follows, and replace
+`{docker_username}` with your Docker Hub username:
 
 ```yaml
 apiVersion: apps/v1
