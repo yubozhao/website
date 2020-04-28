@@ -1,7 +1,7 @@
 +++
 title = "BentoML"
 description = "Model serving with BentoML"
-weight = 51
+weight = 40
 +++
 
 {{% stable-status %}}
