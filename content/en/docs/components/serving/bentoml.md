@@ -202,12 +202,12 @@ curl -i \
   - [Prometheus documentation](https://prometheus.io/docs/introduction/overview/)
   - [Installation instruction with Helm chart](https://github.com/helm/charts/tree/master/stable/prometheus)
 
-BentoML provides Prometheus support out of the box for the model API server, includes
-the essential metrics for model serving and the ability to create and customize new
-metrics base on needs.
+BentoML API server provides Prometheus support out of the box. It comes with a "/metrics"
+endpoint which includes the essential metrics for model serving and the ability to
+create and customize new metrics base on needs.
 
 To enable Prometheus monitoring on the deployed model API server, update the YAML file
-with Prometheus related annotations. Change the deployment spec as follows, and replace
+with Prometheus related annotations. Change the deployment spec as the following, and replace
 `{docker_username}` with your Docker Hub username:
 
 ```yaml
