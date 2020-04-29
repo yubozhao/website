@@ -54,10 +54,8 @@ class IrisClassifier(BentoService):
         return self.artifacts.model.predict(df)
 ```
 
-The following code to create a BentoService SavedBundle with the iris classification
-model. A BentoService SavedBundle is a versioned file archive ready for production
-deployment. The archive contains the model service defined above, python code
-dependencies, PyPi dependencies, and the trained iris classification model:
+The following code trains a classifier model and serve it with the IrisClassifier
+defined above:
 
 ```python
 # main.py
@@ -85,7 +83,7 @@ if __name__ == "__main__":
     saved_path = iris_classifier_service.save()
 ```
 
-The sample code above can be found in the BentoML repository, run the code with the
+The sample code above can be found in the BentoML repository, run them directly with the
 following command:
 
 ```shell
@@ -93,21 +91,25 @@ git clone git@github.com:bentoml/BentoML.git
 python ./bentoml/guides/quick-start/main.py
 ```
 
-Use BentoML CLI to start a local API model server:
+After saving the BentoService instance, you can now start a REST API server with the
+model trained and test the API server locally:
 
 ```shell
+# Start BentoML API server:
 bentoml serve IrisClassifier:latest
 ```
 
-Use `curl` request in another terminal to get the prediction result:
-
 ```bash
+# Send test request
 curl -i \
   --header "Content-Type: application/json" \
   --request POST \
   --data '[[5.1, 3.5, 1.4, 0.2]]' \
   localhost:5000/predict
 ```
+
+BentoML provides a convenient way of containerizing the model API server with Docker. To
+create a docker container image for the sample model above:
 
 Find the file directory of the SavedBundle with `bentoml get` command, which is
 directory structured as a docker build context. Running docker build with this
@@ -168,7 +170,7 @@ spec:
         - containerPort: 5000
 ```
 
-Use `kubectl` CLI to deploy the model API server to the cluster
+Use `kubectl` CLI to deploy the model API server to the kubernetes cluster
 
 ```shell
 kubectl apply -f iris-classifier.yaml
